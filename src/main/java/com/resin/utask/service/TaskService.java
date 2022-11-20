@@ -1,4 +1,4 @@
 package com.resin.utask.service;
 
-public class TaskService {
+public interface TaskService {
 }
