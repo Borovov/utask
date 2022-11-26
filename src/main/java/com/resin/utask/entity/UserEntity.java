@@ -1,5 +1,6 @@
 package com.resin.utask.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,23 +13,27 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "client", schema = "public")
-public class ClientEntity implements UserDetails {
+@Table(name = "user", schema = "public")
+public class UserEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(name = "login", nullable = false)
-    private String login;
+    @Column(name = "username", nullable = false)
+    private String username;
 
     @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "user_id", nullable = false)
     private UUID userId;
+
+    @Column(name = "locked", nullable = false)
+    private boolean accountNonLocked;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -37,7 +42,7 @@ public class ClientEntity implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return username;
     }
 
     @Override
@@ -47,7 +52,7 @@ public class ClientEntity implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return accountNonLocked;
     }
 
     @Override
