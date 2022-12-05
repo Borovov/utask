@@ -9,35 +9,38 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.UUID;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "user", schema = "public")
+@Table(name = "users", schema = "public")
 public class UserEntity implements UserDetails {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private static final long serialVersionUID = 1L;
 
-    @Column(name = "username", nullable = false)
+    @Id
     private String username;
 
-    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "user_id", nullable = false)
-    private UUID userId;
-
-    @Column(name = "locked", nullable = false)
-    private boolean accountNonLocked;
+    @Column(name = "account_non_locked")
+    private int accountNonLocked;
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+    public Collection<GrantedAuthority> getAuthorities() {
+        return List.of(() -> "read");
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
@@ -45,23 +48,31 @@ public class UserEntity implements UserDetails {
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return accountNonLocked;
+        return accountNonLocked == 1;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
+    }
+
+    public void setAccountNonLocked(Boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked ? 1 : 2;
     }
 }

@@ -1,24 +1,20 @@
 package com.resin.utask.controller;
 
+import com.resin.utask.dto.UserDto;
 import com.resin.utask.entity.UserEntity;
 import com.resin.utask.service.SecurityUserDetailsService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
-@RestController
-@RequestMapping(path = "/auth")
-@RequiredArgsConstructor
+@Controller
 public class AuthController {
 
     @Autowired
@@ -27,15 +23,19 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @PostMapping(
-            value = "/register",
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = {
-            MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }
-    )
-    public void addUser(@RequestParam Map<String, String> body) {
-        UserEntity user = new UserEntity(); user.setUsername(body.get("username"));
-        user.setPassword(passwordEncoder.encode(body.get("password")));
-        user.setAccountNonLocked(true); userDetailsManager.createUser(user);
+    @GetMapping("/register")
+    public String register() {
+        return "register";
+    }
+
+    @PostMapping("/register")
+    public void registerUser(@RequestBody UserDto dto) {
+        UserEntity user = new UserEntity();
+        user.setUsername(dto.getUsername());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setAccountNonLocked(true);
+        userDetailsManager.createUser(user);
+        //return user;
     }
 
     private String getErrorMessage(HttpServletRequest request, String key) {
