@@ -3,11 +3,11 @@ package com.resin.utask.dto;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.UUID;
+import java.io.Serializable;
 
 @Data
 @Builder
-public class UserDto {
+public class UserDto implements Serializable {
 
     private String username;
 
