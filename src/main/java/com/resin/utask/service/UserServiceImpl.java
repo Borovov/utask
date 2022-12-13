@@ -5,8 +5,6 @@ import com.resin.utask.entity.UserEntity;
 import com.resin.utask.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +14,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserEntity register(UserDto dto) {
@@ -26,7 +24,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(userEntity);
     }
 
-    private void encodePassword( UserEntity userEntity, UserDto dto) {
+    private void encodePassword(UserEntity userEntity, UserDto dto) {
         userEntity.setPassword(passwordEncoder.encode(dto.getPassword()));
     }
 }

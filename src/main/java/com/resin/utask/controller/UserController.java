@@ -5,17 +5,19 @@ import com.resin.utask.entity.UserEntity;
 import com.resin.utask.mapper.UserMapper;
 import com.resin.utask.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
     @PostMapping("/register")
-    public UserDto userRegistration(UserDto dto) {
+    public UserDto userRegistration(@RequestBody UserDto dto) {
         UserEntity entity;
         try {
             entity = userService.register(dto);
