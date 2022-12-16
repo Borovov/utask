@@ -2,6 +2,7 @@ package com.resin.utask.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -20,9 +21,16 @@ public class UserDetailsDto implements UserDetails {
 
     private boolean accountNonLocked;
 
+    Collection<GrantedAuthority> authorities;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> "read");
+        //return List.of(() -> "read");
+        return authorities;
+    }
+
+    public void setAuthorities(Collection<GrantedAuthority> authorities) {
+        this.authorities = authorities;
     }
 
     @Override
@@ -64,6 +72,7 @@ public class UserDetailsDto implements UserDetails {
     public void setAccountNonLocked(Boolean accountNonLocked) {
         this.accountNonLocked = accountNonLocked;
     }
+
     public boolean getAccountNonLocked() {
         return accountNonLocked;
     }

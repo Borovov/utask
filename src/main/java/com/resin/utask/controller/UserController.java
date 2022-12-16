@@ -5,10 +5,7 @@ import com.resin.utask.entity.UserEntity;
 import com.resin.utask.mapper.UserMapper;
 import com.resin.utask.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,4 +24,15 @@ public class UserController {
         }
         return UserMapper.entityToDto(entity);
     }
+
+    @GetMapping("admin")
+    public String checkAdmin() {
+        return "you are ADMIN";
+    }
+
+    @GetMapping("user")
+    public String checkUser() {
+        return "you are USER";
+    }
+
 }

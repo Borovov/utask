@@ -5,6 +5,8 @@ import com.resin.utask.dto.UserDto;
 import com.resin.utask.entity.UserEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.List;
+
 public final class UserMapper {
 
     public static UserEntity dtoToEntity(UserDto dto) {
@@ -25,6 +27,8 @@ public final class UserMapper {
         return UserDetailsDto.builder()
                 .username(entity.getUsername())
                 .password(entity.getPassword())
+                .accountNonLocked(true)
+                .authorities(List.of(() -> "admin"))
                 .build();
     }
 
